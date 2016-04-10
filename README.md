@@ -17,6 +17,6 @@ or Pollard rho 5.2.5
 or Elliptic curve method 5.2.1
 
 For doing linear algebra modulo a composite m,
-<li> CRT reconstruction. 2.1.7 p 88
+<li> CRT reconstruction. 2.1.7 p 88 (done)
 <li> Hensel lifting 2.3.11 p 105
 </ol>
