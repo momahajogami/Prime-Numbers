@@ -33,3 +33,8 @@ def primes_in_block(small_primes, L, R, B):
         T = T+2*B
         primes_with_offsets = next_pwo
     return(primes_in_range)
+
+odd_p_under_100 = [3,5,7]+primes_in_block([3,5,7],10,100,10)
+odd_p_under_10000 = primes_in_block(odd_p_under_100,100,10000,100)
+primes_under_100 = [2]+odd_p_under_100
+primes_under_10000 = [2] + odd_p_under_10000
