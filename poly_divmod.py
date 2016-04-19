@@ -25,16 +25,11 @@ def poly_prime_divmod(f,g,p):
 
     x = poly1d([1,0])
     d = f.order - g.order
-    if d <= 0:
-        flc,glc = f.c[0],g.c[0] # get leading terms
-        c = poly1d([inverse(glc,p)*flc % p])
-        f = f*c
-        f = reduce_prime_poly(f,p)
-        return f,poly1d([0])
+    if d < 0:
+        return poly1d([0]), f
 
-    count = poly1d([0])
-    
-    while d > 0 and f.order > 0:
+    count = 0
+    while d >= 0 and f.order > 0:
         flc,glc = f.c[0],g.c[0] # get leading terms
 
         c = poly1d([inverse(glc,p)*flc % p])
@@ -48,6 +43,7 @@ def poly_prime_divmod(f,g,p):
        
         count += term
         d = f.order - g.order
+
     return count, f
 
 def poly_prime_mod(f,g,p):
