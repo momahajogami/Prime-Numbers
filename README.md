@@ -1,7 +1,7 @@
 # Prime-Numbers
 Algorithms from Prime Numbers, A Computational Perspective by Crandal and Pomerance
 
-As a beginning, choose Algorithm 6.4.1 on page 304, the Index-calculus method for computing discrete logs in $F_p^\*$. 
+As a beginning, choose Algorithm 6.4.1 on page 304, the Index-calculus method for computing discrete logs in (F_p)\*. 
 
 This is a complicated algorithm which is dependant on several other algorithms in the book, such as a smoothness test and computing inverses modulo a prime. 
 
