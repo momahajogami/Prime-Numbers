@@ -103,15 +103,6 @@ if __name__=="__main__":
     f = poly1d([1,1,47])
     p = long(7)
     a = long(1)
-    # print "p = 7"
-    # print "a = 1"
-    # print hensel_iterate(f,p,a)
-    # print
-    # a = 5
-    # print "p = 7"
-    # print "a = 5"
-    # print hensel_iterate(f,p,a)
-    
     print
     test_solutions(f, p, hensel_iterate(f, p, a))
     a = long(5)
