@@ -29,10 +29,26 @@ class testPolyPrimeDivmod(unittest.TestCase):
         del self.cases
         
     def test_f_g_pairs(self):
-        for (f,g,p) in self.cases: 
+        for i,(f,g,p) in enumerate(self.cases):
+            print 
+            print '#'*8
+            print "test #", i
+            print '#'*8
+            print
+            print "p = ", p
+            print "f = "
+            print f
+            print "g = "
+            print g
+            print "p = ",p
             (q,r) = poly_prime_divmod(f,g,p)
+            print "q = "
+            print q
+            print "r = "
+            print r
             self.assertTrue(r.order == 0 or r.order < g.order)
             h = reduce_prime_poly(g*q + r, p)
+            self.assertEqual(f.order,h.order)
             self.assertEqual(f,h)
 
     

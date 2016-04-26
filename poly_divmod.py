@@ -4,6 +4,10 @@ from collections import deque
 import pdb
 
 def reduce_prime_poly(f,p):
+    # if type(f) != numpy.lib.polynomial.poly1d
+    if type(f) == int:
+        f = poly1d([f])
+
     r = deque(f.c.tolist())
     l = []
     while r:
@@ -22,14 +26,27 @@ def poly_prime_divmod(f,g,p):
     f = q*g + r 
     and r.order < g.order
     """
-
+    zero = poly1d([0])
     x = poly1d([1,0])
+
     d = f.order - g.order
     if d < 0:
-        return poly1d([0]), f
+        return zero, f
 
+    if g == zero:
+        raise ZeroDivisionError ("divmod(f,0) is undefined for all f")
+    # this is a case which requires some thought.
+    
+    if f.order == 0:
+        
+        flc,glc = f.c[0],g.c[0] # get leading terms
+        c = poly1d([inverse(glc,p)*flc % p])
+        c = reduce_prime_poly(c,p)
+        return c,zero
+        
+            
     count = 0
-    while d >= 0 and f.order > 0:
+    while d >= 0 and f != zero:
         flc,glc = f.c[0],g.c[0] # get leading terms
 
         c = poly1d([inverse(glc,p)*flc % p])
@@ -44,6 +61,7 @@ def poly_prime_divmod(f,g,p):
         count += term
         d = f.order - g.order
 
+    count = reduce_prime_poly(count,p)
     return count, f
 
 def poly_prime_mod(f,g,p):

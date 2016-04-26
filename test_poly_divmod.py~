@@ -88,8 +88,6 @@ class testPolyPrimeDivmod(unittest.TestCase):
             try: 
                 (q,r) = poly_prime_divmod(f,g,p)
                 self.printReport(f,g,p,q,r,i)
-                print "g = ", g
-                print "r = ",r
                 self.assertTrue(r.order == 0 or r.order < g.order)
                 h = reduce_prime_poly(g*q + r, p)
                 self.assertEqual(f.order,h.order)
