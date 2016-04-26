@@ -4,6 +4,28 @@ from random import choice
 from poly_divmod import *
 from poly_gcd import *
 from numpy import poly1d
+from euclid import inverse
+
+def make_monic(f,p):
+    if type(f) == int:
+        f = poly1d([f])
+    f = reduce_prime_poly(f,p)
+    r = deque(f.c.tolist())
+
+    # multiply each term by inverse of leading coefficient
+
+    factor = inverse(f.c[0],p)
+    l = []
+    while r:
+        # take c off of the right
+        c = r.popleft()
+        # reduce it mod p and append it to the left.
+        l.append(int(factor * c)%p)
+    # return a monic poly
+    return poly1d(l)
+
+
+
 
 class testPolyPrimeGcd(unittest.TestCase):
     def random_p_poly(self,degree,p):
@@ -34,6 +56,19 @@ class testPolyPrimeGcd(unittest.TestCase):
             f,g = self.random_p_poly(df,p),self.random_p_poly(dg,p)
             self.cases.append((f,g,p))
 
+        # triplets of polys for testRiggedGCD:
+        
+        self.rigged_cases = []
+        for i in range(8):  
+            p = choice(ppp)
+            # choose random degree for f.
+            df,dg,dh = choice(rd), choice(rd), choice(rd)
+            f,g = self.random_p_poly(df,p),self.random_p_poly(dg,p)
+            h = self.random_p_poly(dh,p)
+            self.rigged_cases.append((f,g,h,p))
+
+        
+
     def tearDown(self):
         del self.cases
 
@@ -51,6 +86,34 @@ class testPolyPrimeGcd(unittest.TestCase):
         print d
         print "p = ",p
 
+    def testPage90(self):
+
+        # from page 90 of Crandall and Pomerance
+
+        f = poly1d([7, 0, 1, 0,0,0,0,0,0, 7, 0, 1])
+        g = poly1d([-7,0, -1,0,0,7, 0, 1])
+
+        p = 13
+        d = poly_prime_gcd(f,g,p)
+
+        h = poly1d([1,0,2])
+        self.assertEqual(h,d)
+
+
+        p = 7
+        d = poly_prime_gcd(f,g,p)
+        
+        h = poly1d([1])
+        self.assertEqual(h,d)
+
+
+        p = 2
+        d = poly_prime_gcd(f,g,p)
+        
+        h = poly1d([1,1,1,1])
+        self.assertEqual(h,d)
+
+        
         
     def test_f_g_pairs(self):
 
@@ -104,7 +167,32 @@ class testPolyPrimeGcd(unittest.TestCase):
 
             self.assertTrue(rqf != zero or d == one)
             self.assertTrue(rqg != zero or d == one)
-            
+
+    def testRiggedGCD(self):
+
+        # Now arrange for known gcd
+        
+        one = poly1d([1])
+        polynomials = self.rigged_cases
+        for i,(f,g,h,p) in enumerate(polynomials):
+
+            # h (f,g)
+            gcd_fg = poly_prime_gcd(f,g,p)
+            h_gcd_fg = reduce_prime_poly(h*gcd_fg,p)
+            h_gcd_fg = make_monic(h_gcd_fg,p)
+
+            # (hf,hg)
+            hf = reduce_prime_poly(h*f,p)
+            hg = reduce_prime_poly(h*g,p)
+            gcd_hf_hg = poly_prime_gcd(hf,hg,p)
+
+
+            # the gcd of fh with gh should be h times
+            # the gcd of f with g.
+            # (hf,hg) = h(f,g)
+
+            self.assertEqual(h_gcd_fg, gcd_hf_hg)
+
     
 if __name__ == '__main__':
     unittest.main()
@@ -112,14 +200,3 @@ if __name__ == '__main__':
 
 
 
-
-    
-
-# def test_from_book(self):
-#     f = poly1d([7, 0, 1, 0,0,0,0,0,0, 7, 0, 1])
-#     g = poly1d([-7,0, -1,0,0,7, 0, 1])
-#     q,r = poly_prime_divmod(f,g,13)
-#     h =
-#     k = 
-#     self.assertEqual(q,h)
-#     self.assertEqual(r,k)
