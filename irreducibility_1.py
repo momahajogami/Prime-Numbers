@@ -36,4 +36,4 @@ def is_irreducible_1(f,p):
         
         
 if __name__ == "__main__":
-    print this algorithm is untested
+    print "this algorithm is untested"
