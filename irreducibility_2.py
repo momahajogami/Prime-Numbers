@@ -9,6 +9,9 @@ from poly_gcd import *
 def is_irreducible_2(f,qs,p):
     """
     Algorithm 2.2.10 (Irreducibility test 2).
+    p. 95 of Prime Numbers, A Computational
+    Perspective by Crandall and Pomerance.
+
     Given prime p and a polynoimal f(x) in
     F_p[x] of degree k >= 2, and the distinct
     primes q_1 > q_2 > ... > q_l which divide
@@ -22,7 +25,8 @@ def is_irreducible_2(f,qs,p):
     1 = poly1d([1])
     x = poly1d([1,0])
     qs.append( one )
-    g = rpow(x,rpow(p,k/q1))
+    q = qs.pop()
+    g = rpow(x,rpow(p,k/q))
 
     # 2. [Testing loop]
 
