@@ -16,6 +16,8 @@ class testIrreducibility1(unittest.TestCase):
     # polynomials which are irreducible modulo
     # certain primes.
 
+    # http://www.math.umn.edu/~garrett/
+
     # For a complete description of each
     # example, with proof, see
     # irreducible_examples.pdf in this
