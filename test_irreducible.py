@@ -45,7 +45,7 @@ class testIrreducibility1(unittest.TestCase):
         for p in l:
             self.assertTrue(is_irreducible_1(f,p))
 
-    def testGarrett_1_0_5(self):
+    def testGarrett_1_0_6(self):
         l = [p for p in ppp if p%7 ==3 or p%7 == 5]
         f = poly1d([1]*7)
         for p in l:
