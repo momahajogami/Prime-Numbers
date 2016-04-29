@@ -5,6 +5,7 @@ from practical_sieve import odd_p_under_100 as ppp
 from random import choice, shuffle
 from poly_divmod import reduce_prime_poly as rpp
 from pickle import dump, load
+import pdb
 
 def three_digit(n):
     """ return 3 character string 
@@ -26,11 +27,12 @@ class testIrreducibility1(unittest.TestCase):
             print "entering setup"
             # fun fact:  if p is 3 mod 4 then x^2 +
             # 1 is irreducible mod p.
+            data = []
 
+            # Garrett's example 1.0.3
             l = [p for p in ppp if p %4 ==3]
             l = l[:4]
             f = poly1d([1,0,1])
-            data = []
             for p in l:
                 d = choice(range(3))+1
                 g = self.random_p_poly(d,p)
@@ -38,35 +40,42 @@ class testIrreducibility1(unittest.TestCase):
                 data.append((f,h,p))
 
 
-            # The idea for each of these blocks of
-            # tests is to generate a polynomial
-            # which is 
+            # The idea for each of these blocks
+            # of tests is to generate a
+            # polynomial which is known to be
+            # irreducible, and then another
+            # which is known to be composite
+            # modulo a certain prime.
 
+            # How do we know that the
+            # polynomial should be irreducible?
+            # Check out the pdf included with
+            # this repo.
+
+            # Garrett's example 1.0.4
             l = [p for p in ppp if p %3 ==2]
             l = l[:4]
             f = poly1d([1,1,1])
-            data = []
             for p in l:
                 d = choice(range(3))+1
                 g = self.random_p_poly(d,p)
                 h = rpp(f*g,p)
                 data.append((f,h,p))
 
+            # Garrett's example 1.0.5
             l = [p for p in ppp if p%5 ==1 or p%5 == 4]
             l = l[:4]
             f = poly1d([1,1,1,1])
-            data = []
             for p in l:
                 d = choice(range(3))+1
                 g = self.random_p_poly(d,p)
                 h = rpp(f*g,p)
                 data.append((f,h,p))
-
-
+                
+            # Garrett's example 1.0.6
             l = [p for p in ppp if p%7 ==3 or p%7 == 5]
             l = l[:4]
             f = poly1d([1]*7)
-            data = []
             for p in l:
                 d = choice(range(3))+1
                 g = self.random_p_poly(d,p)
@@ -82,7 +91,7 @@ class testIrreducibility1(unittest.TestCase):
             self.data = data
         else:
             # load a bunch of test cases from file
-            fname = 'data/datadump964'
+            fname = 'data/datadump053'
             f = open(fname,'r')
             data = load(f)
             print "loading file: ", fname
@@ -124,12 +133,18 @@ class testIrreducibility1(unittest.TestCase):
         for (f,g,p) in self.data:
             self.assertTrue(is_irreducible_1(f,p))
             h = rpp(f*g,p)
+            if is_irreducible_1(h,p):
+                pdb.set_trace()
             self.assertFalse(is_irreducible_1(h,p))
             if print_flag:
                 print f
                 print "is irreducible  mod ",p
                 print h
                 print "is reducible mod ",p
+
+        if print_flag:
+            print "tested ",len(self.data)," polynomials for irreducibility."
+                    
 
 
 if __name__ == '__main__':
